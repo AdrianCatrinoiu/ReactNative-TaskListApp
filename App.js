@@ -1,6 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Task from "./components/task";
 
 export default function App() {
@@ -17,6 +25,20 @@ export default function App() {
           <Task text={"Task 4"} />
         </View>
       </View>
+      {/*Writing a task*/}
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={styles.writeTask}
+      >
+        <TextInput
+          style={styles.textInput}
+          placeholder={"Write your task here!"}
+        ></TextInput>
+        <TouchableOpacity style={styles.addTaskButton}>
+          <Text style={styles.addText}>+</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -35,4 +57,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   items: { marginTop: 30 },
+  writeTask: {
+    position: "absolute",
+    bottom: 60,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  textInput: {
+    paddingVertical: 15,
+    width: "70%",
+    paddingHorizontal: 15,
+    backgroundColor: "white",
+    borderRadius: 60,
+    borderColor: "#c0c0c0",
+    borderWidth: 1,
+  },
+  addTaskButton: {
+    width: 60,
+    height: 60,
+    backgroundColor: "white",
+    borderRadius: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#c0c0c0",
+    borderWidth: 1,
+  },
+  addText: {},
 });
