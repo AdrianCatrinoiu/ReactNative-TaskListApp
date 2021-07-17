@@ -4,11 +4,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Avatar } from "react-native-elements";
+import { getString } from "../utils/async";
 import Tasks from "../components/Tasks";
 import Profile from "../components/Profile";
+import Start from "../components/Start";
+import Register from "../components/Register";
+import { UserStateContext } from "../utils/contexts";
+import { createStackNavigator } from "@react-navigation/stack";
 const Tab = createBottomTabNavigator();
+const AuthStack = createStackNavigator();
 
-export default function MyTabBar({ state, descriptors, navigation }) {
+const AuthNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Tasks"
@@ -26,7 +32,6 @@ export default function MyTabBar({ state, descriptors, navigation }) {
           ),
         }}
       />
-
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -39,7 +44,55 @@ export default function MyTabBar({ state, descriptors, navigation }) {
       />
     </Tab.Navigator>
   );
+};
+
+export default function MyTabBar({ state, descriptors, navigation }) {
+  // const isLoggedIn = async () => {
+  //   const check = await getString("isLoggedIn");
+  //   console.log("Check: " + check);
+  //   return check === "true";
+  // };
+  const { userToken } = React.useContext(UserStateContext);
+  return (
+    <NavigationContainer independent={true}>
+      <AuthStack.Navigator initialRouteName="Authentication">
+        {(!userToken && (
+          <>
+            <AuthStack.Screen
+              name="Start"
+              component={Start}
+              options={{
+                tabBarLabel: "Start",
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons
+                    name="home"
+                    color={color}
+                    size={size}
+                  />
+                ),
+              }}
+            />
+            <AuthStack.Screen
+              name="Register"
+              component={Register}
+              options={{
+                tabBarLabel: "Register",
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons
+                    name="home"
+                    color={color}
+                    size={size}
+                  />
+                ),
+              }}
+            />
+          </>
+        )) || <AuthStack.Screen name="To Do List" component={AuthNavigator} />}
+      </AuthStack.Navigator>
+    </NavigationContainer>
+  );
 }
+// }
 
 const styles = StyleSheet.create({
   navWrapper: {

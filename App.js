@@ -16,14 +16,28 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyTabBar from "./navigation/MyTabBar";
 import Tasks from "./components/Tasks";
 import Profile from "./components/Profile";
-
+import {
+  UserStateContext,
+  userProfileContext,
+  UserProfileContext,
+} from "./utils/contexts";
 export default function App() {
   const Tab = createBottomTabNavigator();
 
+  const [userToken, setUserToken] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+
+  const userContext = { userToken, setUserToken };
+  const userProfileContext = { userProfile, setUserProfile };
+
   return (
-    <NavigationContainer>
-      <MyTabBar></MyTabBar>
-    </NavigationContainer>
+    <UserStateContext.Provider value={userContext}>
+      <UserProfileContext.Provider value={userProfileContext}>
+        <NavigationContainer>
+          <MyTabBar></MyTabBar>
+        </NavigationContainer>
+      </UserProfileContext.Provider>
+    </UserStateContext.Provider>
   );
 }
 
