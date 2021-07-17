@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 const Task = (props) => {
   return (
     <View style={styles.item}>
@@ -8,7 +7,15 @@ const Task = (props) => {
         <View style={styles.square}></View>
         <Text style={styles.itemText}>{props.text}</Text>
       </View>
-      <View style={styles.circular}></View>
+      <View style={styles.taskState}>
+        <TouchableOpacity
+          style={styles.delete}
+          onPress={() => props.handleDelete(props.indexDelete)}
+        >
+          <Text style={styles.deleteText}>X</Text>
+        </TouchableOpacity>
+        <View style={styles.circular}></View>
+      </View>
     </View>
   );
 };
@@ -36,13 +43,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 15,
   },
-  itemText: { maxWidth: "80%" },
+  itemText: { maxWidth: "60%" },
   circular: {
     width: 20,
     height: 20,
     borderColor: "#55BCF6",
     borderRadius: 20,
     borderWidth: 2,
+  },
+  taskState: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    width: 80,
+    height: 20,
+  },
+  delete: {
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  deleteText: {
+    fontSize: 20,
+    color: "red",
   },
 });
 export default Task;
